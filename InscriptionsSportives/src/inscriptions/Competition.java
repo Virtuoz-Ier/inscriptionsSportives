@@ -53,7 +53,7 @@ public class Competition implements Comparable<Competition>, Serializable
 	 * Retourne vrai si les inscriptions sont encore ouvertes, 
 	 * faux si les inscriptions sont closes.
 	 * @return
-	 */
+	 */ 
 	
 	public boolean inscriptionsOuvertes()
 	{
