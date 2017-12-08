@@ -9,7 +9,8 @@ import org.junit.Test;
 
 import inscriptions.*;
 
-public class testcompetition {
+
+public class TestCompetition {
 
 	Inscriptions inscriptions = Inscriptions.getInscriptions();
 	Competition competition = inscriptions.createCompetition("Seikooooo", LocalDate.now(), false);

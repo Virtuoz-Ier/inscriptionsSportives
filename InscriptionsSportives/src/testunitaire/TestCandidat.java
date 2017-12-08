@@ -1,5 +1,6 @@
 package testunitaire;
 
+
 import static org.junit.Assert.*;
 import java.util.Set;
 import org.junit.Test;
@@ -7,7 +8,7 @@ import inscriptions.Competition;
 import inscriptions.Inscriptions;
 import inscriptions.Personne;
 
-public class testcandidat {
+public class TestCandidat {
 	
 	Inscriptions inscriptions = Inscriptions.getInscriptions();
 	Personne personne = inscriptions.createPersonne("Dolores", "Dupont", "jetrythis@test.com");

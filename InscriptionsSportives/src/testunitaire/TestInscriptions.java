@@ -1,5 +1,7 @@
 package testunitaire;
 
+
+
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
@@ -8,7 +10,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import inscriptions.*;
-public class testinscriptions {
+public class TestInscriptions {
 
 	Inscriptions inscriptionTest = Inscriptions.getInscriptions();
 	Competition competitionEquipeTest = inscriptionTest.createCompetition("CompetEquipeTest",  null, true);

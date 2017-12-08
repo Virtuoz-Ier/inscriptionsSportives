@@ -1,4 +1,3 @@
-
 package testunitaire;
 
 import static org.junit.Assert.*;
@@ -6,7 +5,7 @@ import java.util.SortedSet;
 import inscriptions.*;
 import org.junit.Test;
 
-public class testequipe {
+public class TestEquipe {
 	Inscriptions inscriptions = Inscriptions.getInscriptions();
 	Equipe fire = inscriptions.createEquipe("Bonjour everyone");
 	

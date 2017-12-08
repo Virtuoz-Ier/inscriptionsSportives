@@ -8,10 +8,11 @@ import java.util.Set;
 import org.junit.Test;
 import inscriptions.*;
 
-public class testpersonne {
+public class TestPersonne {
 	
 	Inscriptions inscriptionTest = Inscriptions.getInscriptions();
 	Personne personneTest = inscriptionTest.createPersonne ("TEST", "test", "tTEST@gmail.com");
+	
 	
 	
 	@Test
