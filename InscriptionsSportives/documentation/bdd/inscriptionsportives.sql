@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 08 Décembre 2017 à 15:10
+-- Généré le :  Ven 08 Décembre 2017 à 15:29
 -- Version du serveur :  5.6.15-log
 -- Version de PHP :  5.4.24
 
@@ -65,6 +65,18 @@ CREATE TABLE IF NOT EXISTS `personne` (
   `prenom` varchar(50) NOT NULL,
   `mail` varchar(50) NOT NULL,
   PRIMARY KEY (`id_p`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `xt`
+--
+
+CREATE TABLE IF NOT EXISTS `xt` (
+  `id_p` int(11) NOT NULL,
+  `id_c` int(11) NOT NULL,
+  KEY `id_p` (`id_p`,`id_c`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
