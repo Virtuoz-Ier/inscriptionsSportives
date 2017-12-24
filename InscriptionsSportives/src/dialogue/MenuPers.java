@@ -69,7 +69,7 @@ public class MenuPers {
 				};
 			}
 			
-			//voir les personne
+			//voir les personnes
 			private static Option getOptionEditerUnePersonne(Personne inscriptions)
 			{
 				return new Option("Modifier "+inscriptions.getPrenom(),"6",getActionModifierPersonne(inscriptions));
@@ -88,4 +88,9 @@ public class MenuPers {
 					}
 				};
 	}
+
+			public Option getMenuPers(Inscriptions inscriptions2) {
+				// TODO Auto-generated method stub
+				return null;
+			}
 }
