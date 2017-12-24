@@ -56,6 +56,7 @@ public class MenuPers {
 				return new Option("Supprimer "+personne.getPrenom(),"2",getActionSupprimerPersonne(personne));
 			}
 
+			
 			static Action getActionSupprimerPersonne(final Personne personne)
 			{
 				return new Action ()
