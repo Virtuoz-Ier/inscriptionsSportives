@@ -88,7 +88,6 @@ public class MenuPers {
 					}
 				};
 	}
-
 			public Option getMenuPers(Inscriptions inscriptions2) {
 				// TODO Auto-generated method stub
 				return null;
