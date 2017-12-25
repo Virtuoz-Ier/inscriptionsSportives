@@ -2,6 +2,7 @@ package dialogue;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import commandLineMenus.Action;
 import commandLineMenus.Menu;
 import commandLineMenus.Option;
@@ -11,85 +12,56 @@ import inscriptions.Personne;
 
 public class MenuPers {
 	
+	private java.util.List<Personne> Lpers ;
+	private static ListPerss Lpers2;
 
-		
-		static Inscriptions inscriptions;
-
-			//Menu personne
-			static Menu getMenuPersonne(Inscriptions inscriptions)
-			{
-				Menu menuPersonne = new Menu ("Gestion de Personnes","3");
-				menuPersonne.add(getListePersonne());
-				menuPersonne.add(getAjouterPersonne());
-				menuPersonne.addBack("r");
-				menuPersonne.setAutoBack(false);
-				return menuPersonne;
-			}
-			
-			//Liste de personnes
-			private static Option getListePersonne()
-			{
-				return new Option("Liste de personne", "l", 
-						() -> 
-						{
-							for (Personne insc : inscriptions.getPersonnes())
-								System.out.println(insc);
-						}
-						
-					);
-			}
-			//Action ajouter une personne
-			private static Option getAjouterPersonne()
-			{
-				return new Option("Ajouter une personne", "a", 
-						() -> 
-						{
-							inscriptions.createPersonne(InOut.getString("Prénom : "), 
-							InOut.getString("Nom : "), InOut.getString("Email :"));
-
-						}
-					);
-			}
-			
-			static Option getOptionSupprimerPersonne(Personne personne)
-			{
-				return new Option("Supprimer "+personne.getPrenom(),"2",getActionSupprimerPersonne(personne));
-			}
-
-		
-			static Action getActionSupprimerPersonne(final Personne personne)
-			{
-				return new Action ()
-				{
-					@Override
-					public void optionSelected()
-					{
-						personne.delete();
-					}
-				};
-			}
-			
-			//voir les personnes
-			private static Option getOptionEditerUnePersonne(Personne inscriptions)
-			{
-				return new Option("Modifier "+inscriptions.getPrenom(),"6",getActionModifierPersonne(inscriptions));
-			}
-			
-			//Action Modifier une personne
-			static Action getActionModifierPersonne (final Personne personne){
-				return new Action ()
-				{
-					@Override
-					public void optionSelected()
-					{
-						personne.setNom(InOut.getString("Nom: "));
-						personne.setPrenom(InOut.getString("Prenom: "));
-						personne.setMail(InOut.getString("Mail: "));
-					}
-				};
+	private static Inscriptions inscriptions;
+	
+	public MenuPers()
+	{
+		Lpers2 = new Listpersonne(Lpers);
+		inscriptions = Inscriptions.getInscriptions();
 	}
-			public Option getMenuPers(Inscriptions inscriptions2) {
-				// TODO Auto-generated method stub
-				return null;
+
+	public Inscriptions getInscriptions()
+	{
+		return inscriptions;
+	}
+	
+	static Menu getMenuPers(Inscriptions inscriptions)
+	{
+		Menu MenuPers = new Menu ("Gestion de Personnes","3");
+		MenuPers.add(AjouterPersonneMenu());
+		MenuPers.add(Lpers2.getListPers());
+		MenuPers.addQuit("q");
+		MenuPers.setAutoBack(false);
+		return MenuPers;
+	}
+
+	static Option AjouterPersonneMenu()
+	{
+		Option Personne = new Option("Inserer Personne", "i", 
+				insererPersonneAction());
+		return Personne;
+	}
+	
+	static Action insererPersonneAction()
+	{
+		return new Action()
+		{
+			public void optionSelected()
+			{
+				String nom = InOut.getString("Le nom de la personne : "),
+						prenom = InOut.getString("Le prenom : "),
+						email = InOut.getString("Le mail : ");
+					inscriptions.createPersonne(nom, prenom, email);
 			}
+
+			@Override
+			public void optionSelectionnee() {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+	}
 }
