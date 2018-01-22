@@ -1,113 +1,101 @@
 package dialogue;
 
-import java.util.ArrayList;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import commandLineMenus.Action;
-import commandLineMenus.List;
-import commandLineMenus.ListData;
-import commandLineMenus.ListOption;
 import commandLineMenus.Menu;
 import commandLineMenus.Option;
+import commandLineMenus.rendering.examples.util.InOut;
+import inscriptions.Equipe;
+import inscriptions.Personne;
 
-public class OptionList
+public class MenuEquipe extends Menu
 {
-	private java.util.List<String> people ;
-	
-	OptionList(java.util.List<String> people)
+	private Equipe equipe;
+	private SortedSet<Personne> personnes = new TreeSet<>();
+
+	public MenuEquipe(String longTitle, String shortTitle, String shortcut, Equipe equipe, SortedSet<Personne> personnes)
 	{
-		this.people = people;
-		List<String> list = getPeopleList();
-		list.start();
+		super(longTitle, shortTitle, shortcut);
+		this.equipe = equipe;
+		this.personnes = personnes;
+		this.setOptions();
 	}
 	
-	private List<String> getPeopleList()
+	public Equipe getEquipe()
 	{
-		List<String> liste = new List<>("Select somebody",getListDataPeople(),getOptionListePeople());
-		liste.setAutoBack(false);
-		liste.addQuit("q");
-		return liste;
+		return this.equipe;
 	}
-	private ListOption<String> getOptionListePeople()
+
+	private Personne getPersonne(String name)
 	{
-		return new ListOption<String>()
+		for (Personne p : this.personnes)
 		{
+			if (p.getNom().equals(name));
+				return p;
+		}
+		return null;
+	}
+	
+	private Personne getPersonneEquipe(String name)
+	{
+		for (Personne p : this.getEquipe().getMembres())
+		{
+			if (p.getNom().equals(name));
+				return p;
+		}
+		return null;
+	}
+	
+	public void setOptions()
+	{
+		this.add(getOptionVoirMembres());
+		this.add(getOptionAjouterPersonne());
+		this.add(getOptionRetirerPersonne());
+		this.add(getOptionAfficher());
+		this.add(getOptionSupprimer());
+		this.addBack("Retour", "r");
+	}
+	
+	private Option getOptionVoirMembres()
+	{
+		return new Option("Voir membres", "1", () -> System.out.println(this.getEquipe().getMembres()));
+	}
+	
+	private Option getOptionAjouterPersonne()
+	{
+		Option option = new Option("Ajouter personne", "2");
 		
-			public Option getOption(String somebody)
-			{
-				return getsomebodyMenu(somebody);
-			}
-		};
-	}
-	
-	private ListData<String> getListDataPeople()
-	{
-		return new ListData<String>()
+		option.setAction( () -> 
 		{
-			@Override
-			public java.util.List<String> getList()
-			{
-				return people;
-			}
-		};
-	}
-	
-	private ListOption<String> getOptionListePeople()
-	{
-		return new ListOption<String>()
-		{
+			String nom = InOut.getString("Nom: ");
+			this.getEquipe().add(this.getPersonne(nom));
+		});
 		
-			public Option getOption(String somebody)
-			{
-				return getsomebodyMenu(somebody);
-			}
-		};
+		return option;
 	}
 	
-
-	private Option getsomebodyMenu(final String somebody)
+	private Option getOptionRetirerPersonne()
 	{
-		Menu somebodyMenu = new Menu(somebody);
-		somebodyMenu.add(getDisplaysomebodyOption(somebody));
-		somebodyMenu.add(getDeletesomebodyOption(somebody));
-		somebodyMenu.setAutoBack(true);
-		return somebodyMenu;
-	}
-	
-
-	private Option getDisplaysomebodyOption(String somebody)
-	{
-		return new Option("show", "s", new Action()
+		Option option = new Option("Retirer personne", "3");
+		
+		option.setAction( () -> 
 		{
-			@Override
-			public void optionSelected()
-			{
-				System.out.println("You must give the man a name : " + somebody + ".");
-			}
+			String nom = InOut.getString("Nom: ");
+			this.getEquipe().remove(this.getPersonneEquipe(nom));
 		});
+		
+		return option;
 	}
 	
-
-	private Option getDeletesomebodyOption(String somebody)
+	private Option getOptionAfficher()
 	{
-		return new Option("delete", "d", new Action()
-		{
-			@Override
-			public void optionSelected()
-			{
-				people.remove(somebody);
-				System.out.println(somebody + " has been deleted.");
-				System.out.println(people);
-			}
-		});
+		return new Option("Afficher équipe", "4", () -> System.out.println(this.getEquipe()));
 	}
-
-
-	public static void main(String[] args)
+	
+	private Option getOptionSupprimer()
 	{
-		java.util.List<String> people = new ArrayList<>();
-		people.add("Ginette");
-		people.add("Marcel");
-		people.add("Gisèle");
-		new OptionList(people);
-	} 
+		return new Option("Supprimer équipe", "5", () -> { this.getEquipe().delete(); goBack(); });
+	}
+	
 }
