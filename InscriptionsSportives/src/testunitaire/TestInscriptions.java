@@ -53,18 +53,18 @@ public class TestInscriptions {
 	}
 
 	@Test
+	public void testRemoveCandidat() {
+		Set<Candidat>setCandidatTest = inscriptionTest.getCandidats();
+		personneTest.delete();
+		assertFalse(setCandidatTest.contains(personneTest));
+	}
+
+	@Test
 	public void testRemoveCompetition() {
 		Set<Competition> setCompetitionTest = inscriptionTest.getCompetitions();
 		competitionSoloTest.delete();
 		assertFalse(setCompetitionTest.contains(competitionSoloTest));
 		
-	}
-
-	@Test
-	public void testRemoveCandidat() {
-		Set<Candidat>setCandidatTest = inscriptionTest.getCandidats();
-		personneTest.delete();
-		assertFalse(setCandidatTest.contains(personneTest));
 	}
 
 	@Test
