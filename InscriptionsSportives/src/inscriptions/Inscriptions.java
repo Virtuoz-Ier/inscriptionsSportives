@@ -98,7 +98,6 @@ public class Inscriptions implements Serializable
 	/**
 	 * Créée une Candidat de type Personne. Ceci est le seul moyen, il n'y a pas
 	 * de constructeur public dans {@link Personne}.
-
 	 * @param nom
 	 * @param prenom
 	 * @param mail
@@ -128,12 +127,12 @@ public class Inscriptions implements Serializable
 		return equipe;
 	}
 	
-	void remove(Competition competition)
+	void delete(Competition competition)
 	{
 		competitions.remove(competition);
 	}
 	
-	void remove(Candidat candidat)
+	void delete(Candidat candidat)
 	{
 		candidats.remove(candidat);
 	}

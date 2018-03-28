@@ -1,50 +1,96 @@
 package testunitaire;
 
 import static org.junit.Assert.*;
-import java.util.SortedSet;
-import inscriptions.*;
+
 import org.junit.Test;
+import inscriptions.Equipe;
+import inscriptions.Inscriptions;
+import inscriptions.Personne;
 
 public class TestEquipe {
-	Inscriptions inscriptions = Inscriptions.getInscriptions();
-	Equipe fire = inscriptions.createEquipe("Bonjour everyone");
 	
-	Personne personnes = inscriptions.createPersonne("Patrick", "Lemoustique", "test@test.com");
-	Personne gens = inscriptions.createPersonne("Marin", "Patetedouce", "testdouce@test.com");
-	
+	@Test
+	public void testDelete() {
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Personne Personne = inscriptions.createPersonne("a", "b", "c");
+		Equipe Equipe = inscriptions.createEquipe("d");
+		Equipe.add(Personne);
+
+		assertTrue(inscriptions.getPersonnes().contains(Personne));
+
+		Personne.delete();
+		assertTrue(!Equipe.getMembres().contains(Personne));
+		assertTrue(!inscriptions.getPersonnes().contains(Personne));
+		assertTrue(!inscriptions.getCandidats().contains(Personne));
+
+	}
+
+	@Test
+	public void testToString() {
+
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Personne Personne = inscriptions.createPersonne("w", "g", "n");
+		Equipe Equipe = inscriptions.createEquipe("q");
+		Equipe.add(Personne);
+		assertNotNull(Personne.toString());
+	}
+
+
 	@Test
 	public void testGetMembres() {
-		SortedSet<Personne> lesMembres = fire.getMembres();
-		fire.add(personnes);
-		fire.add(gens);
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Personne Personne = inscriptions.createPersonne("w", "g", "n");
+		Personne Personne1 = inscriptions.createPersonne("c", "d", "k");
+		Equipe Equipe = inscriptions.createEquipe("q");
+		Equipe.add(Personne);
+		Equipe.add(Personne1);
+		int size = Equipe.getMembres().size();
+		assertTrue(Equipe.getMembres().contains(Personne));
+		assertTrue(Equipe.getMembres().contains(Personne1));
 
-		
-		assertEquals(lesMembres, fire.getMembres());
+
+		assertEquals(size,Equipe.getMembres().size());
+
 	}
 
-	
 	@Test
-	public void testAddpersonne() {
-		SortedSet<Personne> lesMembres = fire.getMembres();
-		fire.add(personnes);
-		fire.add(gens);
-		
-		
-		assertTrue(lesMembres.contains(personnes) && lesMembres.contains(gens));
+	public void testAddPersonne() {
+
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Personne Personne = inscriptions.createPersonne("w", "g", "n");
+		Personne Personne1 = inscriptions.createPersonne("q", "k", "m");
+		Equipe Equipe = inscriptions.createEquipe("a");
+		Equipe.add(Personne);
+		Equipe.add(Personne1);
+		assertTrue(Equipe.getMembres().contains(Personne));
+		assertTrue(Equipe.getMembres().contains(Personne1));
+
 	}
 
-
 	@Test
-	public void testRemovePersonnesonne() {
-		SortedSet<Personne> membres = fire.getMembres();
-		fire.add(personnes);
-		fire.add(gens);
+	public void testRemovePersonne() {
 
-		
-		fire.remove(personnes);
-		fire.remove(gens);
-	
-		
-		assertTrue(!membres.contains(personnes));
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Personne Personne = inscriptions.createPersonne("w", "g", "n");
+		Equipe Equipe = inscriptions.createEquipe("q");
+		Equipe.add(Personne);
+
+
+		assertTrue(Equipe.getMembres().contains(Personne));
+		Personne.delete();
+		assertTrue(!Equipe.getMembres().contains(Personne));
+	}
+	@Test
+	public void testPersonnesAAjouter() {
+
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Personne Personne = inscriptions.createPersonne("w", "g", "n");
+		Equipe Equipe = inscriptions.createEquipe("q");
+		Equipe.add(Personne);
+
+
+		assertTrue(Equipe.getMembres().contains(Personne));
+		Personne.delete();
+		assertTrue(!Equipe.getMembres().contains(Personne));
 	}
 }
