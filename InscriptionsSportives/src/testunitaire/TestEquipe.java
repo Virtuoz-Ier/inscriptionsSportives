@@ -1,5 +1,3 @@
-package testunitaire;
-
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -7,7 +5,7 @@ import inscriptions.Equipe;
 import inscriptions.Inscriptions;
 import inscriptions.Personne;
 
-public class TestEquipe {
+public class testEquipe {
 	
 	@Test
 	public void testDelete() {
@@ -29,8 +27,8 @@ public class TestEquipe {
 	public void testToString() {
 
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Personne Personne = inscriptions.createPersonne("w", "g", "n");
-		Equipe Equipe = inscriptions.createEquipe("q");
+		Personne Personne = inscriptions.createPersonne("a", "b", "c");
+		Equipe Equipe = inscriptions.createEquipe("d");
 		Equipe.add(Personne);
 		assertNotNull(Personne.toString());
 	}
@@ -39,9 +37,9 @@ public class TestEquipe {
 	@Test
 	public void testGetMembres() {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Personne Personne = inscriptions.createPersonne("w", "g", "n");
-		Personne Personne1 = inscriptions.createPersonne("c", "d", "k");
-		Equipe Equipe = inscriptions.createEquipe("q");
+		Personne Personne = inscriptions.createPersonne("a", "b", "c");
+		Personne Personne1 = inscriptions.createPersonne("c", "d", "e");
+		Equipe Equipe = inscriptions.createEquipe("d");
 		Equipe.add(Personne);
 		Equipe.add(Personne1);
 		int size = Equipe.getMembres().size();
@@ -57,9 +55,9 @@ public class TestEquipe {
 	public void testAddPersonne() {
 
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Personne Personne = inscriptions.createPersonne("w", "g", "n");
-		Personne Personne1 = inscriptions.createPersonne("q", "k", "m");
-		Equipe Equipe = inscriptions.createEquipe("a");
+		Personne Personne = inscriptions.createPersonne("a", "b", "c");
+		Personne Personne1 = inscriptions.createPersonne("d", "e", "f");
+		Equipe Equipe = inscriptions.createEquipe("g");
 		Equipe.add(Personne);
 		Equipe.add(Personne1);
 		assertTrue(Equipe.getMembres().contains(Personne));
@@ -71,8 +69,8 @@ public class TestEquipe {
 	public void testRemovePersonne() {
 
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Personne Personne = inscriptions.createPersonne("w", "g", "n");
-		Equipe Equipe = inscriptions.createEquipe("q");
+		Personne Personne = inscriptions.createPersonne("a", "b", "c");
+		Equipe Equipe = inscriptions.createEquipe("d");
 		Equipe.add(Personne);
 
 
@@ -84,8 +82,8 @@ public class TestEquipe {
 	public void testPersonnesAAjouter() {
 
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Personne Personne = inscriptions.createPersonne("w", "g", "n");
-		Equipe Equipe = inscriptions.createEquipe("q");
+		Personne Personne = inscriptions.createPersonne("a", "b", "c");
+		Equipe Equipe = inscriptions.createEquipe("d");
 		Equipe.add(Personne);
 
 
