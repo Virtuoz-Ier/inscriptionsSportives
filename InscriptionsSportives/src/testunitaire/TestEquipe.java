@@ -1,3 +1,5 @@
+package testunitaire;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -5,7 +7,7 @@ import inscriptions.Equipe;
 import inscriptions.Inscriptions;
 import inscriptions.Personne;
 
-public class testEquipe {
+public class TestEquipe {
 	
 	@Test
 	public void testDelete() {
