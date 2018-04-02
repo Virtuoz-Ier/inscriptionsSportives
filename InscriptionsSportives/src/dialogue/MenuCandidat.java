@@ -4,6 +4,7 @@ import commandLineMenus.Menu;
 import commandLineMenus.Option;
 import commandLineMenus.rendering.examples.util.InOut;
 import inscriptions.Candidat;
+import inscriptions.Inscriptions;
 
 public class MenuCandidat extends Menu
 {
@@ -64,4 +65,10 @@ public class MenuCandidat extends Menu
 		return new Option("Supprimer candidat", "5", () -> { this.getCandidat().delete(); goBack(); });
 	}
 
+	public Option getMenuCandidat(Inscriptions inscriptions) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }

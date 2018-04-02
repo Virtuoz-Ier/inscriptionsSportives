@@ -181,4 +181,9 @@ public class MenuCompetition extends Menu
 	{
 		return new Option("Supprimer compétition", "11", () -> { this.getComp().delete(); goBack(); });
 	}
+
+	public Option getMenuCompetition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

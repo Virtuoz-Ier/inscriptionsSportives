@@ -97,5 +97,12 @@ public class MenuEquipe extends Menu
 	{
 		return new Option("Supprimer équipe", "5", () -> { this.getEquipe().delete(); goBack(); });
 	}
+
+	public Option getMenuEquipe() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	
 }
