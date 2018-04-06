@@ -1,108 +1,137 @@
 package dialogue;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.ArrayList;
 
+import commandLineMenus.Action;
+import commandLineMenus.List;
 import commandLineMenus.Menu;
 import commandLineMenus.Option;
 import commandLineMenus.rendering.examples.util.InOut;
 import inscriptions.Equipe;
+import inscriptions.Inscriptions;
 import inscriptions.Personne;
 
-public class MenuEquipe extends Menu
-{
-	private Equipe equipe;
-	private SortedSet<Personne> personnes = new TreeSet<>();
+public class MenuEquipe {
 
-	public MenuEquipe(String longTitle, String shortTitle, String shortcut, Equipe equipe, SortedSet<Personne> personnes)
+	private static Inscriptions inscriptions;
+	private static Equipe equipe;
+	
+	public MenuEquipe()
 	{
-		super(longTitle, shortTitle, shortcut);
-		this.equipe = equipe;
-		this.personnes = personnes;
-		this.setOptions();
+		inscriptions = Inscriptions.getInscriptions();
 	}
 	
-	public Equipe getEquipe()
+	
+	static Menu getMenuEquipe()
 	{
-		return this.equipe;
+		Menu menuPersonne = new Menu ("Gestion des equipe","2");
+		menuPersonne.add(AjouterEquipeMenu());
+		menuPersonne.add(GererequipeList());
+		menuPersonne.addQuit("q");
+		menuPersonne.setAutoBack(false);
+		return menuPersonne;
 	}
 
-	private Personne getPersonne(String name)
+	static Option AjouterEquipeMenu()
 	{
-		for (Personne p : this.personnes)
+		Option Personne = new Option("Creer une équipe", "a", creerequipeAction());
+		return Personne;
+	}
+	static Action creerequipeAction()
+	{
+		return new Action()
 		{
-			if (p.getNom().equals(name));
-				return p;
-		}
-		return null;
+			public void optionSelected()
+			{
+				String nom = InOut.getString("Le nom : ");
+				inscriptions.createEquipe(nom);
+			}
+		};
 	}
 	
-	private Personne getPersonneEquipe(String name)
+	private static List<Equipe> GererequipeList() 
 	{
-		for (Personne p : this.getEquipe().getMembres())
-		{
-			if (p.getNom().equals(name));
-				return p;
-		}
-		return null;
-	}
-	
-	public void setOptions()
-	{
-		this.add(getOptionVoirMembres());
-		this.add(getOptionAjouterPersonne());
-		this.add(getOptionRetirerPersonne());
-		this.add(getOptionAfficher());
-		this.add(getOptionSupprimer());
-		this.addBack("Retour", "r");
-	}
-	
-	private Option getOptionVoirMembres()
-	{
-		return new Option("Voir membres", "1", () -> System.out.println(this.getEquipe().getMembres()));
-	}
-	
-	private Option getOptionAjouterPersonne()
-	{
-		Option option = new Option("Ajouter personne", "2");
+			return new List<Equipe>("Liste des equipes", "b", 
+					() -> new ArrayList<>(inscriptions.getEquipes()),
+					(element) -> getEqMenu(element)
+					);
 		
-		option.setAction( () -> 
+	}
+	
+	private static Option getEqMenu(Equipe someone)
+	{
+		Menu someoneMenu = new Menu("Option pour  " +someone.getNom(),null);
+		
+		someoneMenu.add(VoirInfo(someone));
+		someoneMenu.add(Integrernewmember(someone));
+		//someoneMenu.add(ListMembre());
+
+		someoneMenu.setAutoBack(true);
+		someoneMenu.addQuit("q");
+		return someoneMenu;
+	}
+	
+	private static Option VoirInfo(Equipe someone)
+	{
+		return new Option("Voir", "a", new Action()
 		{
-			String nom = InOut.getString("Nom: ");
-			this.getEquipe().add(this.getPersonne(nom));
+			@Override
+			public void optionSelected()
+			{
+				System.out.println("/Nom : "+someone.getNom());
+				if(!someone.getCompetitions().isEmpty())
+				{
+					System.out.println("Participe à "+someone.getCompetitions().toString());
+				}
+				else
+				{
+					System.out.println(someone.getNom()+" ne participe à aucune compétition");
+				}
+			}
 		});
-		
-		return option;
 	}
-	
-	private Option getOptionRetirerPersonne()
+	private static Option Integrernewmember(Equipe someone)
 	{
-		Option option = new Option("Retirer personne", "3");
-		
-		option.setAction( () -> 
+		return new Option("Integrer une nouvelle recrue", "b", new Action()
 		{
-			String nom = InOut.getString("Nom: ");
-			this.getEquipe().remove(this.getPersonneEquipe(nom));
+			@Override
+			public void optionSelected()
+			{
+				
+			}
 		});
+	}
+	
+	
+	private static List<Personne> ListMembre() 
+	{
+			return new List<Personne>("Liste des personnes dans une equipe", "b", 
+					() -> new ArrayList<>(equipe.getMembres()),
+					(element) -> getPersMenu(element)
+					);
 		
-		return option;
 	}
 	
-	private Option getOptionAfficher()
+	private static Option getPersMenu(Personne someone)
 	{
-		return new Option("Afficher équipe", "4", () -> System.out.println(this.getEquipe()));
+		Menu someoneMenu = new Menu("Option pour  " +someone.getNom(),null);
+		
+		someoneMenu.add(SupprimerMembre(someone));
+		someoneMenu.add(ListMembre());
+		someoneMenu.setAutoBack(true);
+		someoneMenu.addQuit("q");
+		return someoneMenu;
 	}
 	
-	private Option getOptionSupprimer()
+	private static Option SupprimerMembre(Personne someone)
 	{
-		return new Option("Supprimer équipe", "5", () -> { this.getEquipe().delete(); goBack(); });
+		return new Option("Retirer le membre de l'équipe", "b", new Action()
+		{
+			@Override
+			public void optionSelected()
+			{
+				
+			}
+		});
 	}
-
-	public Option getMenuEquipe() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	
 }

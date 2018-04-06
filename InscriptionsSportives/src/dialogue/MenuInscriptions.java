@@ -1,296 +1,177 @@
 package dialogue;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
+import commandLineMenus.Action;
 import commandLineMenus.Menu;
 import commandLineMenus.Option;
-import commandLineMenus.List;
-import commandLineMenus.ListData;
-import commandLineMenus.ListOption;
 import commandLineMenus.rendering.examples.util.InOut;
-import inscriptions.*;
+import inscriptions.Inscriptions;
 
-public class MenuInscriptions extends Menu
-{
-	private Inscriptions inscriptions;
+@SuppressWarnings("unused")
+public class MenuInscriptions {
 	
-	public MenuInscriptions(String title, Inscriptions inscriptions)
-	{
-		super(title);
-		this.inscriptions = inscriptions;
-	}
-	
-	public Inscriptions getInsc()
-	{
-		return this.inscriptions;
-	}
-	
-	public void launch()
-	{
-		this.setOptions();
-		this.start();
-	}
-	
-	public void setOptions()
-	{
-		this.add(this.getMenuGererCandidat());
-		this.add(this.getMenuGererCompetition());
-		this.add(this.getMenuGererEquipe());
-		this.add(this.getOptionGetPersonnes());
-		this.add(this.getOptionGetCandidats());
-		this.add(this.getOptionGetEquipes());
-		this.add(this.getOptionGetCompetitions());
-		this.add(this.getOptionCreatePersonne());
-		this.add(this.getOptionCreateEquipe());
-		this.add(this.getOptionCreateCompetition());
-		this.add(this.getOptionReinitialiser());
-		this.add(this.getOptionRecharger());
-		this.add(this.getOptionSauvegarder());
-		this.add(this.getOptionAfficher());
-		this.addQuit("Quitter", "q");
-	}
-	
-	private Candidat getCandidat(String name)
-	{
-		for (Candidat c : this.getInsc().getCandidats())
-		{
-			if (c.getNom().equals(name));
-				return c;
-		}
-		return null;
-	}
-	
-	private Competition getCompetition(String name)
-	{
-		for (Competition c : this.getInsc().getCompetitions())
-		{
-			if (c.getNom().equals(name));
-				return c;
-		}
-		return null;
-	}
-	
-	private Equipe getEquipe(String name)
-	{
-		for (Equipe e : this.getInsc().getEquipes())
-		{
-			if (e.getNom().equals(name));
-				return e;
-		}
-		return null;
-	}
-	
-	private Menu getMenuGererCandidat()
-	{
-		java.util.List<String> options = new ArrayList<>();
-		
-		for (Candidat c : this.getInsc().getCandidats())
-		{
-			options.add(c.getNom());
-		}
-		
-		List<String> menu = new List<String>("Gerer Candidat", "1", 
-				new ListData<String>()		
-				{
-					// Returns the data needed to refresh the list 
-					// each time it is displayed. 
-					public java.util.List<String> getList()
-					{
-						return options;
-					}	
-				},
-				new ListOption<String>()
-				{	
-					public Option getOption(String someone)
-					{
-						return new MenuCandidat("Gérer " + someone, someone, null, getCandidat(someone));
-					}
-				});
-		
-		menu.addBack("Retour", "r");
-		return menu;
-	}
-	
-	private Menu getMenuGererCompetition()
-	{
-		java.util.List<String> options = new ArrayList<>();
-		
-		for (Competition c : this.getInsc().getCompetitions())
-		{
-			options.add(c.getNom());
-		}
-		
-		List<String> menu = new List<String>("Gerer Compétition", "2", 
-				new ListData<String>()		
-				{
-					// Returns the data needed to refresh the list 
-					// each time it is displayed. 
-					public java.util.List<String> getList()
-					{
-						return options;
-					}	
-				},
-				new ListOption<String>()
-				{	
-					public Option getOption(String someone)
-					{
-						return new MenuCompetition("Gérer " + someone, someone, null, getCompetition(someone), getInsc().getPersonnes(), getInsc().getEquipes());
-					}
-				});
-		
-		menu.addBack("Retour", "r");
-		return menu;
-	}
-	
-	private Menu getMenuGererEquipe()
-	{
-		java.util.List<String> options = new ArrayList<>();
-		
-		for (Equipe e : this.getInsc().getEquipes())
-		{
-			options.add(e.getNom());
-		}
-		
-		List<String> menu = new List<String>("Gerer Equipe", "3", 
-				new ListData<String>()		
-				{
-					// Returns the data needed to refresh the list 
-					// each time it is displayed. 
-					public java.util.List<String> getList()
-					{
-						return options;
-					}	
-				},
-				new ListOption<String>()
-				{	
-					public Option getOption(String someone)
-					{
-						return new MenuEquipe("Gérer " + someone, someone, null, getEquipe(someone), getInsc().getPersonnes());
-					}
-				});
-		
-		menu.addBack("Retour", "r");
-		return menu;
-	}
-	
-	private Option getOptionGetPersonnes()
-	{
-		return new Option("Voir personnes", "4", () -> System.out.println(this.getInsc().getPersonnes()));
-	}
-	
-	private Option getOptionGetCandidats()
-	{
-		return new Option("Voir candidats", "5", () -> System.out.println(this.getInsc().getCandidats()));
-	}
-	private Option getOptionGetEquipes()
-	{
-		return new Option("Voir équipes", "6", () -> System.out.println(this.getInsc().getEquipes()));
-	}
-	
-	private Option getOptionGetCompetitions()
-	{
-		return new Option("Voir compétitions", "7", () -> System.out.println(this.getInsc().getCompetitions()));
+	private static Menu MenuI;
+	private static MenuPersonne Mpe;
+	private static MenuCompetition Mco;
+	private static MenuEquipe Me;
+	private static Inscriptions inscriptions;
+
+	public MenuInscriptions(){
+		inscriptions = Inscriptions.getInscriptions();
+		MenuI = getMenuI();
+		Mpe = new MenuPersonne() ;
+		Mco = new MenuCompetition();
+		Me = new MenuEquipe();
+		new Hibernate();
 	}
 
-	private Option getOptionCreatePersonne()
+	public static void main(String[] args)
 	{
-		Option option = new Option("Créer personne", "8");
-		
-		option.setAction( () -> 
-		{
-			String nom = InOut.getString("Nom: ");
-			String prenom = InOut.getString("Prenom: ");
-			String mail = InOut.getString("Mail: ");
-			this.getInsc().createPersonne(nom, prenom, mail);
-		});
-		
-		return option;
+		MenuInscriptions menu = new MenuInscriptions();
+		menu.start();
 	}
 	
-	private Option getOptionCreateEquipe()
+	public void start()
 	{
-		Option option = new Option("Créer équipe", "9");
-		
-		option.setAction( () -> 
-		{
-			String nom = InOut.getString("Nom: ");
-			this.getInsc().createEquipe(nom);
-		});
-		
-		return option;
+		MenuI.start();
 	}
 	
-	private Option getOptionCreateCompetition()
+	public Inscriptions getInscriptions()
 	{
-		Option option = new Option("Créer compétition", "10");
-		
-		option.setAction( () -> 
+		return inscriptions;
+	}
+	
+	static Menu getMenuI()
+	{
+		Menu MenuI = new Menu("Menu Complet");
+		MenuI.add(MenuPersonne.getMenuPersonne(inscriptions));
+		MenuI.add(Me.getMenuEquipe());
+		MenuI.add(Mco.getMenuComp());
+		MenuI.addQuit("q");
+		return MenuI;
+	}
+	
+	static Option PersonneMenu()
+	{
+		Option Personne = new Option("Insérer Personne", "ip", 
+				insererPersonneAction());
+		Option Modifpersonne = new Option("Modifier Personne", "mp", 
+				ModifierpersonneOption());
+		return Personne;
+	}
+	
+	static Option EquipeMenu()
+	{
+		Option Creeequipe = new Option("Créer Equipe", "ce", 
+				creerequipeAction());
+		Option Modifequipe = new Option("Modifier Equipe", "me", 
+				ModifierequipeOption());
+		return Creeequipe;
+	}
+	
+	static Option CompeteMenu()
+	{
+		Option Creecompetition = new Option("Créer Compétition", "cc", 
+				creercompetionAction());
+		Option Modifcompetition = new Option("Modifier Compétition", "mc", 
+				ModifierequipeOption());
+		return Creecompetition;
+	}
+	
+	static Action insererPersonneAction()
+	{
+		return new Action()
 		{
-			String nom = InOut.getString("Nom: ");
-			
-			String date = InOut.getString("Date (jj/mm/yyyy): ");
-			String dateRegex = "^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([2][0])?[1-9][0-9]$";
-			
-			while(!Pattern.matches(dateRegex, date))
+			public void optionSelected()
 			{
-				System.out.println("Mauvaise date.");
-				date = InOut.getString("Date (jj/mm/yyyy): ");
+				String a = InOut.getString("Le nom de la personne : "),
+						b = InOut.getString("Le prenom : ");
+				System.out.println("Le nom de la competition :" + a );
+				System.out.println("Date de debut de la compete :" +b );
+				
+				//a completer
 			}
-			
-			LocalDate dateCloture = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-			
-			String team = InOut.getString("En équipe? (oui ou non): ");
-			boolean enEquipe = true;
-			
-			while(!(team.equals("oui") || team.equals("non")))
+		};
+	}
+	
+	static Action creercompetionAction()
+	{
+		return new Action()
+		{
+			public void optionSelected()
 			{
-				team = InOut.getString("En équipe? (oui ou non): ");
+				String v = InOut.getString("Le nom de la competition : "),
+						w = InOut.getString("Date de debut de la compete : "),
+						q = InOut.getString("Date de fin d'inscription : "),
+						k = InOut.getString("Type de compete : ");
+				System.out.println("Le nom de la competition :" + v );
+				System.out.println("Date de debut de la compete :" +w );
+				System.out.println("Date de fin d'inscription :" + q );
+				System.out.println("Type de compete :" + k );
 			}
-			
-			if (team.equals("non"))
-				enEquipe = false;
+		};
+	}
+	
+	static Action creerequipeAction()
+	{
+		return new Action()
+		{
+			public void optionSelected()
+			{
+				String a = InOut.getString("Le nom de l'equipe : ");
+				System.out.println("Le nom de l'equipe :" + a );
+			}
+		};
+	}
+	
+	static Action ModifierequipeOption()
+	{
+		return new Action()
+		{
+			@Override
+			public void optionSelected() {
+				listeequipe();
+					
+		}
 
-			this.getInsc().createCompetition(nom, dateCloture, enEquipe);
-		});
-		
-		return option;
+			private void listeequipe() {
+				
+				
+			}
+	};
 	}
 	
-	private Option getOptionReinitialiser()
+	static Option getDisplayCompOption()
 	{
-		return new Option("Réinitialiser", "11", () -> this.getInsc().reinitialiser());
+		Option displayComp = new Option("Afficher les compétitions", "2",
+				getDisplayCompetition());
+		return displayComp;
 	}
 	
-	private Option getOptionRecharger()
-	{
-		return new Option("Recharger", "12", () -> this.getInsc().recharger());
-	}
-	
-	private Option getOptionSauvegarder()
-	{
-		Option option = new Option("Sauvegarder", "13");
-		
-		option.setAction( () -> 
+	static Action getDisplayCompetition() {
+		return new Action()
 		{
-			try
+			public void optionSelected()
 			{
-				this.getInsc().sauvegarder();
+				System.out.println(Inscriptions.getInscriptions().getCompetitions());
 			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		});
-
-		return option;
-	}
+		};
+}
 	
-	private Option getOptionAfficher()
+	static Action ModifierpersonneOption()
 	{
-		return new Option("Afficher", "14", () -> System.out.println(this.getInsc()));
+		return new Action()
+		{
+			@Override
+			public void optionSelected() {
+				Listpersonne();
+					
+		}
+			private void Listpersonne() {
+				
+				
+			}
+	};
 	}
 }

@@ -1,189 +1,125 @@
 package dialogue;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
 
+import commandLineMenus.Action;
+import commandLineMenus.List;
 import commandLineMenus.Menu;
 import commandLineMenus.Option;
 import commandLineMenus.rendering.examples.util.InOut;
-import inscriptions.*;
+import inscriptions.Competition;
+import inscriptions.Inscriptions;
 
-public class MenuCompetition extends Menu
-{
-	private Competition competition;
-	private SortedSet<Personne> personnes = new TreeSet<>();
-	private SortedSet<Equipe> equipes = new TreeSet<>();
+public class MenuCompetition {
+	
+	
+	private static Inscriptions inscriptions;
 
-	public MenuCompetition(String longTitle, String shortTitle, String shortcut, Competition competition, SortedSet<Personne> personnes, SortedSet<Equipe> equipes)
+	public MenuCompetition()
 	{
-		super(longTitle, shortTitle, shortcut);
-		this.competition = competition;
-		this.personnes = personnes;
-		this.equipes = equipes;
-		this.setOptions();
+		inscriptions = Inscriptions.getInscriptions();
 	}
 	
-	public Competition getComp()
-	{
-		return this.competition;
-	}
 	
-	private Candidat getCandidat(String name)
+	static Menu getMenuComp()
 	{
-		for (Candidat c : this.getComp().getCandidats())
-		{
-			if (c.getNom().equals(name));
-				return c;
-		}
-		return null;
-	}
-	
-	private Personne getPersonne(String name)
-	{
-		for (Personne p : this.personnes)
-		{
-			if (p.getNom().equals(name));
-				return p;
-		}
-		return null;
-	}
-	
-	private Equipe getEquipe(String name)
-	{
-		for (Equipe e : this.equipes)
-		{
-			if (e.getNom().equals(name));
-				return e;
-		}
-		return null;
-	}
-	
-	public void setOptions()
-	{
-		this.add(getOptionVoirNom());
-		this.add(getOptionSetNom());
-		this.add(getOptionInscriptionsOuvertes());
-		this.add(getOptionEnEquipe());
-		this.add(getOptionViewDateCloture());
-		this.add(getOptionSetDateCloture());
-		this.add(getOptionAjouterPersonne());
-		this.add(getOptionAjouterEquipe());
-		this.add(getOptionRetirerCandidat());
-		this.add(getOptionAfficher());
-		this.add(getOptionSupprimer());
-		this.addBack("Retour", "r");
-	}
-	
-	private Option getOptionVoirNom()
-	{
-		return new Option("Voir nom", "1", () -> System.out.println(this.getComp().getNom()));
-	}
-	
-	private Option getOptionSetNom()
-	{
-		Option option = new Option("Changer nom", "2");
-		
-		option.setAction( () -> 
-		{
-			String nom = InOut.getString("Nom: ");
-			this.getComp().setNom(nom);
-		});
-		
-		return option;
-	}
-	
-	private Option getOptionInscriptionsOuvertes()
-	{
-		return new Option("Inscription ouvertes?", "3", () -> System.out.println(this.getComp().inscriptionsOuvertes()));
-	}
-	
-	private Option getOptionEnEquipe()
-	{
-		return new Option("En équipe?", "4", () -> System.out.println(this.getComp().estEnEquipe()));
-	}
-	
-	private Option getOptionViewDateCloture()
-	{
-		return new Option("Voir dâte de cloture", "5", () -> System.out.println(this.getComp().getDateCloture()));
+		Menu menuPersonne = new Menu ("Gestion des competitions","3");
+		menuPersonne.add(CreercompMenu());
+		menuPersonne.add(GerercompList());
+		menuPersonne.addQuit("q");
+		menuPersonne.setAutoBack(false);
+		return menuPersonne;
 	}
 
-	private Option getOptionSetDateCloture()
+	static Option CreercompMenu()
 	{
-		Option option = new Option("Changer dâte de cloture", "6");
-		
-		option.setAction( () -> 
+		Option Personne = new Option("Creer une competition", "a", creercompAction());
+		return Personne;
+	}
+	static Action creercompAction()
+	{
+		return new Action()
 		{
-			String date = InOut.getString("Date (jj/mm/yyyy): ");
-			String dateRegex = "^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([2][0])?[1-9][0-9]$";
-			
-			while(!Pattern.matches(dateRegex, date))
+			public void optionSelected()
 			{
-				System.out.println("Mauvaise date.");
-				date = InOut.getString("Date (jj/mm/yyyy): ");
+				String nom = InOut.getString("Le nom : ");
+				//
 			}
-			
-			LocalDate dateCloture = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-			
-			this.getComp().setDateCloture(dateCloture);
-		});
-		
-		return option;
+		};
 	}
 	
-	private Option getOptionAjouterPersonne()
+	private static List<Competition> GerercompList() 
 	{
-		Option option = new Option("Ajouter personne", "7");
+			return new List<Competition>("Liste des competes", "b", 
+					() -> new ArrayList<>(inscriptions.getCompetitions()),
+					(element) -> getcompMenu(element)
+					);
 		
-		option.setAction( () -> 
-		{
-			String nom = InOut.getString("Nom: ");
-			this.getComp().add(this.getPersonne(nom));
-		});
-		
-		return option;
 	}
 	
-	private Option getOptionAjouterEquipe()
+	private static Option getcompMenu(Competition someone)
 	{
-		Option option = new Option("Ajouter équipe", "8");
+		Menu someoneMenu = new Menu("Option pour  "
+				+someone.getNom(),null);
 		
-		option.setAction( () -> 
-		{
-			String nom = InOut.getString("Nom: ");
-			this.getComp().add(this.getEquipe(nom));
-		});
+		someoneMenu.add(VoirInfo(someone));
+		someoneMenu.add(ModifierDatecloture(someone));
+		someoneMenu.add(ModifierNom(someone));
+		someoneMenu.add(Suppcomp(someone));
 		
-		return option;
-	}
-	
-	private Option getOptionRetirerCandidat()
-	{
-		Option option = new Option("Retirer candidat", "9");
-		
-		option.setAction( () -> 
-		{
-			String nom = InOut.getString("Nom: ");
-			this.getComp().remove(this.getCandidat(nom));
-		});
-		
-		return option;
-	}
-	
-	private Option getOptionAfficher()
-	{
-		return new Option("Afficher compétition", "10", () -> System.out.println(this.getComp()));
-	}
-	
-	private Option getOptionSupprimer()
-	{
-		return new Option("Supprimer compétition", "11", () -> { this.getComp().delete(); goBack(); });
-	}
 
-	public Option getMenuCompetition() {
-		// TODO Auto-generated method stub
-		return null;
+		someoneMenu.setAutoBack(true);
+		someoneMenu.addQuit("q");
+		return someoneMenu;
 	}
+	
+	private static Option VoirInfo(Competition someone)
+	{
+		return new Option("Voir", "a", new Action()
+		{
+			@Override
+			public void optionSelected()
+			{
+				System.out.println("/Nom : "+someone.getNom()+"/ Date de cloture des inscription : "+someone.getDateCloture());
+				if(someone.estEnEquipe()){
+					System.out.println("Compete en equipe");
+				}
+				else {System.out.println("Compete individuelle");}
+			}
+		});
+	}
+	private static Option ModifierDatecloture(Competition someone)
+	{
+		return new Option("Modifier la date de cloture des inscription", "b", new Action()
+		{
+			@Override
+			public void optionSelected()
+			{
+				
+			}
+		});
+	}
+	private static Option ModifierNom(Competition someone)
+	{
+		return new Option("Modifier le nom de la competition", "b", new Action()
+		{
+			@Override
+			public void optionSelected()
+			{
+				
+			}
+		});
+	}
+	private static Option Suppcomp(Competition someone)
+	{
+		return new Option("Supprimer cette competition", "b", new Action()
+		{
+			@Override
+			public void optionSelected()
+			{
+				
+			}
+		});
+	}
+	
 }
