@@ -10,7 +10,6 @@ import commandLineMenus.rendering.examples.util.InOut;
 import inscriptions.Competition;
 import inscriptions.Inscriptions;
 
-
 public class MenuCompetition {
 	
 	

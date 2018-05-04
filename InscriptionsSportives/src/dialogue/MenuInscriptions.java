@@ -9,7 +9,6 @@ import commandLineMenus.rendering.examples.util.InOut;
 import inscriptions.Inscriptions;
 
 @SuppressWarnings("unused")
-
 public class MenuInscriptions {
 	
 	private static Menu MenuI;
