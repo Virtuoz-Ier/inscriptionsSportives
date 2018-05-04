@@ -11,6 +11,7 @@ import inscriptions.Equipe;
 import inscriptions.Inscriptions;
 import inscriptions.Personne;
 
+
 public class MenuEquipe {
 
 	private static Inscriptions inscriptions;

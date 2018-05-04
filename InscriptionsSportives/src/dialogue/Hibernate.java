@@ -15,7 +15,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 
-
 public class Hibernate
 {
     private static Session session = null;

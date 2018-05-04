@@ -10,8 +10,8 @@ import commandLineMenus.rendering.examples.util.InOut;
 import inscriptions.Inscriptions;
 import inscriptions.Personne;
 
+
 public class MenuPersonne {
-	
 	
 	private static Inscriptions inscriptions;
 
