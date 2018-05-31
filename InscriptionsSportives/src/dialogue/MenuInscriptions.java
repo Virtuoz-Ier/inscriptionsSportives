@@ -23,7 +23,7 @@ public class MenuInscriptions {
 		Mpe = new MenuPersonne() ;
 		Mco = new MenuCompetition();
 		Me = new MenuEquipe();
-		new Hibernate();
+		
 	}
 
 	public static void main(String[] args)
