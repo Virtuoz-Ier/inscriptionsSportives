@@ -19,25 +19,27 @@ public class Hibernate
 {
     private static Session session = null;
     private static SessionFactory sessionFactory = null;
-    private static final String CONF_FILE = "config/hibernate.cfg.xml";
+    private static final String CONF_FILE = "config/hibernate.m2l.cfg.xml";
     private static Transaction transaction = null;
+    
+   
 
     static void initHibernate()
     {
-    	/*
+    	
     	try
         {
-        */
+        
             Configuration configuration = new Configuration().configure(CONF_FILE);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings((Map)configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-            /*
+            
     }
         catch (HibernateException ex)
         {
             throw new RuntimeException("Probleme de config : " + ex.getMessage(), ex);
         }
-        */
+        
     }
 
     public static void open() {

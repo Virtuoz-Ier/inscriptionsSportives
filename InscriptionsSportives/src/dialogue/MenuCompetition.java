@@ -81,7 +81,7 @@ public class MenuCompetition {
 			public void optionSelected()
 			{
 				System.out.println("/Nom : "+someone.getNom()+"/ Date de cloture des inscription : "+someone.getDateCloture());
-				if(someone.estEnEquipe()){
+				if(someone.getEnEquipe()){
 					System.out.println("Compete en equipe");
 				}
 				else {System.out.println("Compete individuelle");}

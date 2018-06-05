@@ -12,9 +12,9 @@
 
         <property name="hbm2ddl.auto">create</property>
 
-        <mapping class="entity.Competition"/>
-        <mapping class="entity.Equipe"/>
-        <mapping class="entity.Personne"/>
+        <mapping class="inscriptions.Competition"/>
+        <mapping class="inscriptions.Equipe"/>
+        <mapping class="inscriptions.Personne"/>
 
     </session-factory>
 </hibernate-configuration>

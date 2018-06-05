@@ -90,6 +90,7 @@ public class MenuEquipe {
 			}
 		});
 	}
+	
 	private static Option Integrernewmember(Equipe someone)
 	{
 		return new Option("Integrer une nouvelle recrue", "b", new Action()

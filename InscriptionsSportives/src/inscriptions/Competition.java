@@ -29,28 +29,19 @@ import javax.persistence.Table;
 @Table(name = "competition")
 public class Competition implements Comparable<Competition>, Serializable
 {
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_co")
-    private int id_co;
+
+    private int id;
 	
 	
 	private static final long serialVersionUID = -2882150118573759729L;
 	private Inscriptions inscriptions;
 	
-	@Column(name = "nom")
 	private String nom;
 	
-	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "Participer",
-	joinColumns = {@JoinColumn(name = "id_co")},
-	inverseJoinColumns = {@JoinColumn(name = "id_cand")})
 	private Set<Candidat> candidats;
 	
-	@Column(name="date_cloture")
 	private LocalDate dateCloture;
 	
-	@Column(name="en_equipe")
 	private boolean enEquipe = false;
 	
 	
@@ -84,6 +75,15 @@ public class Competition implements Comparable<Competition>, Serializable
 		this.nom = nom ;
 	}
 	
+	public int getId()
+	{
+		return id;
+	}
+	
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 	/**
 	 * Retourne vrai si les inscriptions sont encore ouvertes, 
 	 * faux si les inscriptions sont closes.
@@ -110,9 +110,14 @@ public class Competition implements Comparable<Competition>, Serializable
 	 * @return
 	 */
 	
-	public boolean estEnEquipe()
+	public boolean getEnEquipe()
 	{
 		return enEquipe;
+	}
+	
+	public void setEnEquipe(boolean enEquipe)
+	{
+		this.enEquipe = enEquipe;
 	}
 	
 	/**

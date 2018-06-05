@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="inscriptions.Competition" table="competition">
+        <id name="id" type="int" column="id_comp">
+            <generator class="native" />
+        </id>
+        <property name="nom" column="nom_comp" type="string" />
+        <property name="dateCloture" column="date_cloture_comp" type="date" />
+        <property name="enEquipe" column="en_equipe_comp" type="boolean" />
+    </class>
+</hibernate-mapping>
